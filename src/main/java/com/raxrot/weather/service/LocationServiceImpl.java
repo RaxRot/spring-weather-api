@@ -4,6 +4,8 @@ import com.raxrot.weather.model.Location;
 import com.raxrot.weather.repository.LocationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LocationServiceImpl implements LocationService {
 
@@ -15,4 +17,10 @@ public class LocationServiceImpl implements LocationService {
     public Location add(Location location) {
         return locationRepository.save(location);
     }
+
+    @Override
+    public List<Location> findUnTrashed() {
+        return locationRepository.findUnTrashed();
+    }
+
 }
