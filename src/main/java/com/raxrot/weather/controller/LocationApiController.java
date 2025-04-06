@@ -1,5 +1,6 @@
 package com.raxrot.weather.controller;
 
+import com.raxrot.weather.exception.LocationNotFoundException;
 import com.raxrot.weather.model.Location;
 import com.raxrot.weather.service.LocationService;
 import jakarta.validation.Valid;
@@ -41,5 +42,15 @@ public class LocationApiController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(location);
+    }
+
+    @PutMapping
+    public ResponseEntity<Location> update(@RequestBody @Valid Location location) {
+        try {
+           Location updatedLocation = locationService.update(location);
+           return ResponseEntity.ok(updatedLocation);
+        } catch (LocationNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
