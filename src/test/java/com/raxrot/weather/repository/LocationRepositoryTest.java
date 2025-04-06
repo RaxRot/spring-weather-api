@@ -1,6 +1,7 @@
 package com.raxrot.weather.repository;
 
 import com.raxrot.weather.model.Location;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,6 +20,7 @@ class LocationRepositoryTest {
     @Autowired
     private LocationRepository repository;
 
+    @DisplayName("Test add data in Repo")
     @Test
     public void testAddSuccess(){
         Location location = Location.builder()
@@ -36,9 +38,23 @@ class LocationRepositoryTest {
         assertThat(savedLocation.getCode()).isEqualTo("NYC_USA");
     }
 
+    @DisplayName("Test get unTrashed data from Repo")
     @Test
     public void testUnTrashSuccess(){
         List<Location> locations = repository.findUnTrashed();
         assertThat(locations).isNotNull();
+    }
+
+    @DisplayName("Test get unTrashed data by code")
+    @Test
+    public void testFindByCodeSuccess(){
+        String code="ABCD";
+        Location location = repository.findByCode(code);
+        assertThat(location).isNull();
+
+        String code2="DELHI_IN";
+        location = repository.findByCode(code2);
+        assertThat(location).isNotNull();
+        assertThat(location.getCode()).isEqualTo("DELHI_IN");
     }
 }

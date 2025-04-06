@@ -23,4 +23,9 @@ public class LocationServiceImpl implements LocationService {
         return locationRepository.findUnTrashed();
     }
 
+    @Override
+    public Location findByCode(String code) {
+        return locationRepository.findByCode(code);
+    }
+
 }

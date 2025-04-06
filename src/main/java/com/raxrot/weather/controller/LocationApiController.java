@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/locations")
 public class LocationApiController {
+
     private final LocationService locationService;
     public LocationApiController(LocationService locationService) {
         this.locationService = locationService;
@@ -31,5 +32,14 @@ public class LocationApiController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(locations);
+    }
+
+    @GetMapping("/{code}")
+    public ResponseEntity<Location> findByCode(@PathVariable String code) {
+        Location location=locationService.findByCode(code);
+        if (location==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(location);
     }
 }

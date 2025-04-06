@@ -7,4 +7,5 @@ import java.util.List;
 public interface LocationService {
     Location add(Location location);
     List<Location> findUnTrashed();
+    Location findByCode(String code);
 }
