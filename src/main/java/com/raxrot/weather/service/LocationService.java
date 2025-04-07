@@ -8,7 +8,7 @@ import java.util.List;
 public interface LocationService {
     Location add(Location location);
     List<Location> findUnTrashed();
-    Location findByCode(String code);
+    Location findByCode(String code) throws LocationNotFoundException;
     Location update(Location locationInRequest) throws LocationNotFoundException;
     void softDelete(String code) throws LocationNotFoundException;
 }

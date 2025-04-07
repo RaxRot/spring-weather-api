@@ -26,8 +26,12 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location findByCode(String code) {
-        return locationRepository.findByCode(code);
+    public Location findByCode(String code) throws LocationNotFoundException {
+        Location location = locationRepository.findByCode(code);
+        if (location == null) {
+            throw new LocationNotFoundException("No location found with code: " + code);
+        }
+        return location;
     }
 
     @Override
@@ -54,5 +58,4 @@ public class LocationServiceImpl implements LocationService {
         }
         locationRepository.trashedByCode(code);
     }
-
 }
