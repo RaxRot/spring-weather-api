@@ -1,6 +1,7 @@
 package com.raxrot.weather.repository;
 
 import com.raxrot.weather.model.Location;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +59,14 @@ class LocationRepositoryTest {
         assertThat(location.getCode()).isEqualTo("DELHI_IN");
     }
     //write update test!!!!
+
+    @Transactional
+    @DisplayName("Test delete(send to trashed")
+    @Test
+    public void testDeleteSuccess(){
+        String code="LACA_USA";
+        repository.trashedByCode(code);
+        Location location = repository.findByCode(code);
+        assertThat(location).isNull();
+    }
 }

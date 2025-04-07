@@ -10,4 +10,5 @@ public interface LocationService {
     List<Location> findUnTrashed();
     Location findByCode(String code);
     Location update(Location locationInRequest) throws LocationNotFoundException;
+    void softDelete(String code) throws LocationNotFoundException;
 }

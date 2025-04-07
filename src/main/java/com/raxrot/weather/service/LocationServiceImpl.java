@@ -3,6 +3,7 @@ package com.raxrot.weather.service;
 import com.raxrot.weather.exception.LocationNotFoundException;
 import com.raxrot.weather.model.Location;
 import com.raxrot.weather.repository.LocationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    @Transactional
     public Location update(Location locationInRequest) throws LocationNotFoundException {
         String code = locationInRequest.getCode();
         Location locationInDb = locationRepository.findByCode(code);
@@ -42,6 +44,15 @@ public class LocationServiceImpl implements LocationService {
         locationInDb.setCountryName(locationInRequest.getCountryName());
         locationInDb.setEnabled(locationInRequest.isEnabled());
         return locationRepository.save(locationInDb);
+    }
+
+    @Override
+    @Transactional
+    public void softDelete(String code) throws LocationNotFoundException {
+        if (!locationRepository.existsById(code)) {
+            throw new LocationNotFoundException("No location found with this code");
+        }
+        locationRepository.trashedByCode(code);
     }
 
 }
