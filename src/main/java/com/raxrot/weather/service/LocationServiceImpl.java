@@ -1,5 +1,6 @@
 package com.raxrot.weather.service;
 
+import com.raxrot.weather.exception.DuplicateLocationException;
 import com.raxrot.weather.exception.LocationNotFoundException;
 import com.raxrot.weather.model.Location;
 import com.raxrot.weather.repository.LocationRepository;
@@ -16,7 +17,11 @@ public class LocationServiceImpl implements LocationService {
         this.locationRepository = locationRepository;
     }
 
+    @Override
     public Location add(Location location) {
+        if (locationRepository.existsById(location.getCode())) {
+            throw new DuplicateLocationException(location.getCode());
+        }
         return locationRepository.save(location);
     }
 
