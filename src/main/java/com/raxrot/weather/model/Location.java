@@ -43,13 +43,18 @@ public class Location {
     private boolean enabled;
     private boolean trashed;
 
-    @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "location", cascade = CascadeType.ALL)
     private RealtimeWeather realtimeWeather;
 
-    public Location(String cityName,String regionName,String countryName,String countryCode) {
+    public Location(String cityName, String regionName, String countryName, String countryCode) {
         this.cityName = cityName;
         this.regionName = regionName;
         this.countryName = countryName;
         this.countryCode = countryCode;
+    }
+
+    @Override
+    public String toString() {
+        return regionName + "," + countryName + "," + cityName;
     }
 }

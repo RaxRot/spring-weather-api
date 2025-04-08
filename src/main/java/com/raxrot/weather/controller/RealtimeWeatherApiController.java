@@ -1,5 +1,6 @@
 package com.raxrot.weather.controller;
 
+import com.raxrot.weather.dto.RealtimeWeatherDTO;
 import com.raxrot.weather.exception.GeolocationException;
 import com.raxrot.weather.exception.LocationNotFoundException;
 import com.raxrot.weather.model.Location;
@@ -9,6 +10,7 @@ import com.raxrot.weather.service.RealtimeWeatherService;
 import com.raxrot.weather.utility.CommonUtility;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,20 +23,26 @@ public class RealtimeWeatherApiController {
 
    private GeolocationService locationService;
    private RealtimeWeatherService realtimeWeatherService;
+   private ModelMapper modelMapper;
 
-   public RealtimeWeatherApiController(RealtimeWeatherService realtimeWeatherService, GeolocationService locationService) {
+   public RealtimeWeatherApiController(RealtimeWeatherService realtimeWeatherService,
+                                       GeolocationService locationService,
+                                       ModelMapper modelMapper) {
        this.realtimeWeatherService = realtimeWeatherService;
        this.locationService = locationService;
+       this.modelMapper = modelMapper;
    }
 
    @GetMapping
-    public ResponseEntity<RealtimeWeather> getRealtimeWeatherByIP(HttpServletRequest request)  {
+    public ResponseEntity<?> getRealtimeWeatherByIP(HttpServletRequest request)  {
       String ipAddress = CommonUtility.getIpAddress(request);
 
        try {
           Location locationFromIP = locationService.getLocation(ipAddress);
           RealtimeWeather realtimeWeather = realtimeWeatherService.getByLocation(locationFromIP);
-          return ResponseEntity.ok(realtimeWeather);
+
+           RealtimeWeatherDTO dto=modelMapper.map(realtimeWeather, RealtimeWeatherDTO.class);
+          return ResponseEntity.ok(dto);
        } catch (GeolocationException e) {
            log.error(e.getMessage());
            return ResponseEntity.badRequest().build();
