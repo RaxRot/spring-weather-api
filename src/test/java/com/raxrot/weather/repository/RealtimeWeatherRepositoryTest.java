@@ -40,14 +40,15 @@ class RealtimeWeatherRepositoryTest {
     @DisplayName("Test add weather in location")
     @Test
     public void testAddWeatherToLocation(){
-        String code="NYC_USA";
-        realtimeWeatherRepository.deleteById(code);
+        String code="DELHI_IN";
+
         Location location=locationRepository.findByCode(code);
         RealtimeWeather realtimeWeather = RealtimeWeather.builder()
-                .temperature(-1)
-                .humidity(30)
-                .status("Snowy")
-                .windSpeed(15)
+                .temperature(10)
+                .humidity(60)
+                .status("Sunny")
+                .windSpeed(10)
+                .precipitation(70)
                 .location(location)
                 .build();
 
@@ -56,5 +57,28 @@ class RealtimeWeatherRepositoryTest {
 
         assertThat(updatedLocation).isNotNull();
         assertThat(updatedLocation.getRealtimeWeather().getLocationCode()).isEqualTo(code);
+    }
+
+    @DisplayName("Test not found by country code and city")
+    @Test
+    public void testFindByCountryCodeAndCityNotFound(){
+        String countryCode="JP";
+        String cityName="Tokyo";
+        RealtimeWeather foundedRealtimeWeather=
+                realtimeWeatherRepository.findByCountryCodeAndCity(countryCode,cityName);
+
+        assertThat(foundedRealtimeWeather).isNull();
+    }
+
+    @DisplayName("Test found by country code and city")
+    @Test
+    public void testFindByCountryCodeAndCity(){
+        String countryCode="IN";
+        String cityName="New Delhi";
+        RealtimeWeather foundedRealtimeWeather=
+                realtimeWeatherRepository.findByCountryCodeAndCity(countryCode,cityName);
+
+        assertThat(foundedRealtimeWeather).isNotNull();
+        assertThat(foundedRealtimeWeather.getLocation().getCityName()).isEqualTo(cityName);
     }
 }
