@@ -69,4 +69,16 @@ public class GlobalExceptionHandler {
                 .path(request.getServletPath())
                 .build();
     }
+
+    @ExceptionHandler(GeolocationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDto handleGeolocationError(HttpServletRequest request, GeolocationException ex) {
+        return ErrorDto.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .errors(Collections.singletonList(ex.getMessage()))
+                .path(request.getServletPath())
+                .build();
+    }
 }
