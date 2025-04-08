@@ -8,4 +8,7 @@ import org.springframework.data.repository.query.Param;
 public interface RealtimeWeatherRepository extends JpaRepository<RealtimeWeather, String> {
     @Query("select r from RealtimeWeather r where r.location.countryCode=:countryCode and r.location.cityName=:city")
     RealtimeWeather findByCountryCodeAndCity(@Param("countryCode") String countryCode,@Param("city") String city);
+
+    @Query("select r from RealtimeWeather  r where r.location.code=:code and r.location.trashed=false")
+    RealtimeWeather findByLocationCode(@Param("code") String code);
 }
