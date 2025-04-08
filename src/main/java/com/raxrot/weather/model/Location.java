@@ -45,4 +45,11 @@ public class Location {
 
     @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
     private RealtimeWeather realtimeWeather;
+
+    public Location(String cityName,String regionName,String countryName,String countryCode) {
+        this.cityName = cityName;
+        this.regionName = regionName;
+        this.countryName = countryName;
+        this.countryCode = countryCode;
+    }
 }
