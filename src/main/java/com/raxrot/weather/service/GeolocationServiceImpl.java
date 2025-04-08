@@ -4,7 +4,9 @@ import com.ip2location.IP2Location;
 import com.ip2location.IPResult;
 import com.raxrot.weather.exception.GeolocationException;
 import com.raxrot.weather.model.Location;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,14 +15,18 @@ import java.io.IOException;
 @Service
 public class GeolocationServiceImpl implements GeolocationService {
 
-    private final String DBPath="src/main/resources/ip2locdb/IP2LOCATION-LITE-DB3.BIN";
+    @Value("${ip2location.db.path}")
+    private String DBPath;
+
     private IP2Location ip2Locator=new IP2Location();
 
-    public GeolocationServiceImpl() {
+    @PostConstruct
+    public void init() {
         try {
             ip2Locator.Open(DBPath);
-        }catch (IOException ex){
-            log.error(ex.getMessage(),ex);
+            log.info("IP2Location DB loaded: {}", DBPath);
+        } catch (IOException ex) {
+            log.error("Failed to load IP2Location DB", ex);
         }
     }
 
