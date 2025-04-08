@@ -6,4 +6,5 @@ import com.raxrot.weather.model.RealtimeWeather;
 
 public interface RealtimeWeatherService {
      RealtimeWeather getByLocation(Location location) throws LocationNotFoundException;
+     RealtimeWeather update(String locationCode, RealtimeWeather realtimeWeather) throws LocationNotFoundException;
 }
