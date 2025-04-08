@@ -1,9 +1,6 @@
 package com.raxrot.weather.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -45,4 +42,7 @@ public class Location {
 
     private boolean enabled;
     private boolean trashed;
+
+    @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
+    private RealtimeWeather realtimeWeather;
 }
